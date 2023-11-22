@@ -5,15 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Film Finder</title>
     <script src="Controllers/controller.js"></script>
-    <script src="Models/omdbApi.js"></script>
+    <script src="Models/moviesList.js"></script>
+    <script src="Views/showFilms.js"></script>
+
+    <style>
+        p{
+            font-size: 50px;
+            margin: 100px;
+        }
+    </style>
 </head>
 <body>
     <header>
         <h1>Film Finder</h1>
         <input id="search-input" type="text">
     </header>
-    <main>
-        
+    <main id="main">
+        <h3 id="results"></h3>
+        <div id="films">
+
+        </div>
     </main>
 </body>
 </html>
