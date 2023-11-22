@@ -1,9 +1,16 @@
+var json = "hola";
 window.onload = () =>{
+    // OMDb API Model creation
     var omdbApi = new OmdbApi; 
 
-    document.getElementById("search-input").addEventListener("keypress", (e)=>{
-        if(e.key === "Enter"){
-            omdbApi.searchRequest();
-        }
+    // Set Enter Input event to the search input
+    document.getElementById("search-input").addEventListener("input", async (e)=>{
+
+        // Request Method on OMDb model
+        await omdbApi.searchRequest(e.target);
+        
+        console.log(json);
     });
 }
+
+
