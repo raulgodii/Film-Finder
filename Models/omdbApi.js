@@ -8,27 +8,19 @@ class OmdbApi{
 
     // AJAX request method to the API
     loadDoc(searchInputValue) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             const xhttp = new XMLHttpRequest();
 
             xhttp.open("GET", "Controllers/apicontroller.php?s=" + searchInputValue, true);
             xhttp.onload = function () {
-                // Parsear la respuesta JSON
+                // Parse JSON response
                 json = JSON.parse(this.response);
 
-                // Resolver la promesa
+                // Resolve promise
                 resolve();
             };
 
-            // Manejar posibles errores en la solicitud AJAX
-            xhttp.onerror = function () {
-                console.error("Error en la solicitud AJAX");
-                
-                // Rechazar la promesa en caso de error
-                reject();
-            };
-
-            // Enviar la solicitud AJAX
+            // Send AJAX request
             xhttp.send();
         });
     }
