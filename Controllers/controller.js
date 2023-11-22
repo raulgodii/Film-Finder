@@ -7,21 +7,27 @@ window.onload = () =>{
     // ShowFilms View creation
     var ShowFilms = new ShowFilmsView;
 
+    
+    searchInput = document.getElementById("search-input");
+
     // Set Enter Input event to the search input
-    document.getElementById("search-input").addEventListener("input", async (e)=>{
+    searchInput.addEventListener("input", async (e)=>{
 
         // Request Method on OMDb model
-        await moviesList.searchRequest(e.target);
+        await moviesList.loadDoc(searchInput.value);
 
         // LLAMADA VISTA CAMBIAR
         ShowFilms.showFilms(moviesList.movies, moviesList.totalResults, moviesList.response);
     });
 
     // Asign scroll loader
-    window.addEventListener("scroll", async (e)=>{
+    window.addEventListener("scroll", async ()=>{
         if(window.innerHeight + window.scrollY >= document.body.offsetHeight){
             // Request Method on OMDb model
-            await omdbApi.searchRequest(e.target);
+            console.log("FIn")
+            moviesList.loadNewPage();
+            await moviesList.loadDoc(searchInput.value);
+            ShowFilms.showFilms(moviesList.movies, moviesList.totalResults, moviesList.response);
         }
     });
 

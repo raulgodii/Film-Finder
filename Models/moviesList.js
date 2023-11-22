@@ -3,20 +3,14 @@ class moviesList{
     totalResults;
     pages;
     response = false;
-
-    // Search Request to the API
-    async searchRequest(searchInput){
-
-        await this.loadDoc(searchInput.value);
-
-    }
+    actualPage = 1;
 
     // AJAX request method to the API
     loadDoc(searchInputValue) {
         return new Promise((resolve) => {
             const xhttp = new XMLHttpRequest();
 
-            xhttp.open("GET", "Controllers/apicontroller.php?s=" + searchInputValue, true);
+            xhttp.open("GET", "Controllers/apicontroller.php?s=" + searchInputValue + "&page=" + this.actualPage, true);
             xhttp.onload = () => {
                 // Parse JSON response
                 let json = JSON.parse(xhttp.response);
@@ -44,6 +38,12 @@ class moviesList{
             // Send AJAX request
             xhttp.send();
         });
+    }
+
+    loadNewPage(){
+        if(this.actualPage+1 <= this.pages){
+            this.actualPage++;
+        }
     }
     
 }
