@@ -1,4 +1,5 @@
 var omdbApi;
+var ShowFilms;
 
 window.onload = () =>{
     // OMDb API Model creation
@@ -10,27 +11,33 @@ window.onload = () =>{
     
     searchInput = document.getElementById("search-input");
 
+    let debounceTimer;
     // Set Enter Input event to the search input
-    searchInput.addEventListener("input", async (e)=>{
+    searchInput.addEventListener("input", async ()=>{
 
-        // Request Method on OMDb model
-        await moviesList.loadDoc(searchInput.value);
+        // Clean TimeOut
+        clearTimeout(debounceTimer);
 
-        // LLAMADA VISTA CAMBIAR
-        ShowFilms.showFilms(moviesList.movies, moviesList.totalResults, moviesList.response);
+        // Set TimeOut
+        debounceTimer = setTimeout(async () => {
+            // Request Method on OMDb model
+            await moviesList.loadDoc(searchInput.value, true);
+
+            // LLAMADA VISTA CAMBIAR
+            ShowFilms.showFilms(moviesList.movies, moviesList.totalResults, moviesList.response);
+        }, 300);
     });
 
     // Asign scroll loader
-    window.addEventListener("scroll", async ()=>{
-        if(window.innerHeight + window.scrollY >= document.body.offsetHeight){
-            // Request Method on OMDb model
-            console.log("FIn")
-            moviesList.loadNewPage();
-            await moviesList.loadDoc(searchInput.value);
+    window.addEventListener('scroll', async ()=> {
+
+        const {scrollHeight, clientHeight, scrollTop} = document.documentElement
+    
+        // console.log(`scrollTop + clientHeight = ${scrollTop + clientHeight}  | Altura personalizada = ${scrollHeight - 3}`)
+        if(scrollTop + clientHeight > scrollHeight - 3 && moviesList.actualPage<=moviesList.pages && !moviesList.executingRequest){
+            await moviesList.loadDoc(searchInput.value, false);
             ShowFilms.showFilms(moviesList.movies, moviesList.totalResults, moviesList.response);
         }
     });
 
 }
-
-
