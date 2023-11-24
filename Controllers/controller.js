@@ -43,7 +43,24 @@ window.onload = () =>{
         }
     });
 
-    
+    // Change view depending the Order Selected
+    document.getElementById("order").addEventListener("change", (e)=>{
+        let opt = e.target.value;
+        let movies;
+        switch(opt){
+            case 'opt1': // Order None
+                movies = moviesList.movies
+                break;
+            case 'opt2': // Order By Idbm Rating
+                movies = orderByRating(moviesList.movies);
+                break;
+            case 'opt3': // Order by fundraising
+                break;
+            case 'opt4': // Order by Votes
+                break;
+        }
+        ShowFilms.showFilms(movies, moviesList.totalResults, moviesList.response);
+    });
 
 }
 
@@ -58,4 +75,9 @@ function asignDetailsEvent(){
             ShowFilms.showFilm(filmDetails);
         });
     });
+}
+
+// Order an array by Rating
+function orderByRating(movies){
+
 }
