@@ -15,6 +15,7 @@ class ShowFilmsView{
                 const newFilm = document.createElement("div");
                 const title = document.createElement("p");
                 title.textContent = element.Title;
+                newFilm.imdbID = element.imdbID;
 
                 newFilm.appendChild(title);
                 films.appendChild(newFilm);
@@ -24,7 +25,15 @@ class ShowFilmsView{
             results.textContent = "Total Results: 0";
         }
         
-        
-        
+    }
+
+    showFilm(filmDetails){
+        const details = document.createElement("div");
+        let h1 = document.createElement("h1");
+
+        h1.textContent = filmDetails.Title;
+
+        details.appendChild(h1);
+        document.body.appendChild(details);
     }
 }

@@ -6,7 +6,7 @@ class moviesList{
     actualPage = 1;
     executingRequest = false;
 
-    // AJAX request method to the API
+    // AJAX request method to the API - Search Films
     loadDoc(searchInputValue, firstSearch) {
         // Check if there is one request running
         if (this.executingRequest) {
@@ -20,7 +20,7 @@ class moviesList{
         return new Promise((resolve) => {
             const xhttp = new XMLHttpRequest();
 
-            xhttp.open("GET", "Controllers/apicontroller.php?s=" + searchInputValue + "&page=" + this.actualPage, true);
+            xhttp.open("GET", "Controllers/searchFilms.php?s=" + searchInputValue + "&page=" + this.actualPage, true);
             xhttp.onload = () => {
                 // Parse JSON response
                 let json = JSON.parse(xhttp.response);
@@ -72,4 +72,24 @@ class moviesList{
             return "error";
         }
     }   
+
+    // AJAX request method to the API - Search Film Details
+    loadDocFilm(imdbID) {
+
+        return new Promise((resolve) => {
+            const xhttp = new XMLHttpRequest();
+
+            xhttp.open("GET", "Controllers/searchFilmDetails.php?i=" + imdbID, true);
+            xhttp.onload = () => {
+                // Parse JSON response
+                let json = JSON.parse(xhttp.response);
+                
+                // Resolve promise
+                resolve(json);
+            };
+
+            // Send AJAX request
+            xhttp.send();
+        });
+    }
 }
