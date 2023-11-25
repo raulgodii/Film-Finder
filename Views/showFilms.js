@@ -1,9 +1,6 @@
 class ShowFilmsView{
     showFilms(movies, totalResults, response){
         console.log(movies)
-
-        document.getElementById("center").style.display = "none";
-        document.getElementById("main-films").style.display = "block";
         
         const results = document.getElementById("results");
 
@@ -46,6 +43,12 @@ class ShowFilmsView{
         }
         
     }
+
+    firstSearch() {
+        document.getElementById("center").style.display = "none";
+        document.getElementById("main-films").style.display = "block";
+    }
+    
 
     showFilm(filmDetails){
         let details = document.getElementById("details-film");

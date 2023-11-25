@@ -20,6 +20,7 @@ window.onload = () =>{
         // Clean TimeOut if exists
         clearTimeout(debounceTimer);
         loader.style.display = "block";
+        ShowFilms.firstSearch();
 
         // Set TimeOut
         debounceTimer = setTimeout(async () => {
