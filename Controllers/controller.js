@@ -42,6 +42,7 @@ window.onload = () =>{
         // console.log(`scrollTop + clientHeight = ${scrollTop + clientHeight}  | Altura personalizada = ${scrollHeight - 3}`)
         if(scrollTop + clientHeight > scrollHeight - 300 && moviesList.actualPage<=moviesList.pages && !moviesList.executingRequest){
             loader.style.display = "block";
+            document.getElementById("order").value = "opt1";
             await moviesList.loadDoc(searchInput.value.trim(), false);
             ShowFilms.showFilms(moviesList.movies, moviesList.totalResults, moviesList.response);
             asignDetailsEvent();
@@ -56,6 +57,8 @@ window.onload = () =>{
     // Change view depending the Order Selected
     document.getElementById("order").addEventListener("change", async (e)=>{
         let opt = e.target.value;
+        loader.style.display = "block";
+        document.getElementById("films").innerHTML = '';
         let movies;
         switch(opt){
             case 'opt1': // Order None
@@ -65,6 +68,7 @@ window.onload = () =>{
                 movies = await moviesList.orderByRating(moviesList.movies);
                 break;
             case 'opt3': // Order by fundraising
+                //movies = await moviesList.orderByFundraising(moviesList.movies);
                 break;
             case 'opt4': // Order by Votes
                 break;
@@ -73,6 +77,7 @@ window.onload = () =>{
         ShowFilms.showFilms(movies, moviesList.totalResults, moviesList.response);
 
         asignDetailsEvent();
+        loader.style.display = "none";
     });
 
 }

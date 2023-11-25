@@ -91,6 +91,14 @@ class ShowFilmsView{
         // Actors
         let actors = details.querySelector(".detail-actors");
         actors.innerHTML = "<b>Actors: </b>" + filmDetails.Actors;
+
+        // Fundraising
+        let fundraising = details.querySelector(".detail-fundraising");
+        fundraising.innerHTML = "<b>Fundraising: </b>" + filmDetails.BoxOffice;
+
+        // Votes
+        let votes = details.querySelector(".detail-votes");
+        votes.innerHTML = "<b>Votes: </b>" + filmDetails.imdbVotes;
         
     }
 

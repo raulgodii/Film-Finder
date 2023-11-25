@@ -117,6 +117,30 @@ class moviesList{
 
         return filmsCopy;
     }
+
+    async orderByFundraising(films) {
+        const detailsArray = await Promise.all(films.map(movie => this.loadDocFilm(movie.BoxOffice)));
     
+        const getImdbRating = (details) => {
+            if (details.imdbRating === 'N/A') {
+                return 0;
+            }
+            return parseFloat(details.imdbRating);
+        };
+
+        const filmsCopy = [...films];
+
+        filmsCopy.sort((a, b) => {
+            const detailsA = detailsArray.find(details => details.imdbID === a.imdbID);
+            const detailsB = detailsArray.find(details => details.imdbID === b.imdbID);
+
+            const ratingA = getImdbRating(detailsA);
+            const ratingB = getImdbRating(detailsB);
+
+            return ratingB - ratingA;
+        });
+
+        return filmsCopy;
+    }
     
 }
