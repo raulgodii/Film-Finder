@@ -140,10 +140,35 @@ class moviesList{
             const detailsA = detailsArray.find(details => details.imdbID === a.imdbID);
             const detailsB = detailsArray.find(details => details.imdbID === b.imdbID);
 
-            const ratingA = getFundraising(detailsA);
-            const ratingB = getFundraising(detailsB);
+            const funA = getFundraising(detailsA);
+            const funB = getFundraising(detailsB);
 
-            return ratingB - ratingA;
+            return funB - funA;
+        });
+
+        return filmsCopy;
+    }
+
+    async orderByVotes(films) {
+        const detailsArray = await Promise.all(films.map(movie => this.loadDocFilm(movie.imdbID)));
+    
+        const getVotes = (details) => {
+            if (!details.imdbVotes || details.imdbVotes === 'N/A') {
+                return 0;
+            }
+            return parseFloat(details.imdbVotes);
+        };
+
+        const filmsCopy = [...films];
+
+        filmsCopy.sort((a, b) => {
+            const detailsA = detailsArray.find(details => details.imdbID === a.imdbID);
+            const detailsB = detailsArray.find(details => details.imdbID === b.imdbID);
+
+            const votesA = getVotes(detailsA);
+            const votesB = getVotes(detailsB);
+
+            return votesB - votesA;
         });
 
         return filmsCopy;

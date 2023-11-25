@@ -1,5 +1,6 @@
 var omdbApi;
 var ShowFilms;
+var order;
 
 window.onload = () =>{
     // OMDb API Model creation
@@ -12,6 +13,7 @@ window.onload = () =>{
     var loader = document.getElementById("loader");
     
     searchInput = document.getElementById("search-input");
+    order = document.getElementById("order");
 
     let debounceTimer;
     // Set Enter Input event to the search input
@@ -20,6 +22,7 @@ window.onload = () =>{
         // Clean TimeOut if exists
         clearTimeout(debounceTimer);
         loader.style.display = "block";
+        document.getElementById("order").value = "opt1";
         ShowFilms.firstSearch();
 
         // Set TimeOut
@@ -42,7 +45,7 @@ window.onload = () =>{
         // console.log(`scrollTop + clientHeight = ${scrollTop + clientHeight}  | Altura personalizada = ${scrollHeight - 3}`)
         if(scrollTop + clientHeight > scrollHeight - 300 && moviesList.actualPage<=moviesList.pages && !moviesList.executingRequest){
             loader.style.display = "block";
-            document.getElementById("order").value = "opt1";
+            checkOrder();
             await moviesList.loadDoc(searchInput.value.trim(), false);
             ShowFilms.showFilms(moviesList.movies, moviesList.totalResults, moviesList.response);
             asignDetailsEvent();
@@ -55,30 +58,7 @@ window.onload = () =>{
     });
 
     // Change view depending the Order Selected
-    document.getElementById("order").addEventListener("change", async (e)=>{
-        let opt = e.target.value;
-        loader.style.display = "block";
-        document.getElementById("films").innerHTML = '';
-        let movies;
-        switch(opt){
-            case 'opt1': // Order None
-                movies = moviesList.movies;
-                break;
-            case 'opt2': // Order By Idbm Rating
-                movies = await moviesList.orderByRating(moviesList.movies);
-                break;
-            case 'opt3': // Order by fundraising
-                movies = await moviesList.orderByFundraising(moviesList.movies);
-                break;
-            case 'opt4': // Order by Votes
-                break;
-        }
-        
-        ShowFilms.showFilms(movies, moviesList.totalResults, moviesList.response);
-
-        asignDetailsEvent();
-        loader.style.display = "none";
-    });
+    order.addEventListener("change", checkOrder);
 
 }
 
@@ -93,4 +73,30 @@ function asignDetailsEvent(){
             ShowFilms.showFilm(filmDetails);
         });
     });
+}
+
+async function checkOrder(){
+        let opt = order.value;
+        loader.style.display = "block";
+        document.getElementById("films").innerHTML = '';
+        let movies;
+        switch(opt){
+            case 'opt1': // Order None
+                movies = moviesList.movies;
+                break;
+            case 'opt2': // Order By Idbm Rating
+                movies = await moviesList.orderByRating(moviesList.movies);
+                break;
+            case 'opt3': // Order by fundraising
+                movies = await moviesList.orderByFundraising(moviesList.movies);
+                break;
+            case 'opt4': // Order by Votes
+                movies = await moviesList.orderByVotes(moviesList.movies);
+                break;
+        }
+        
+        ShowFilms.showFilms(movies, moviesList.totalResults, moviesList.response);
+
+        asignDetailsEvent();
+        loader.style.display = "none";
 }
