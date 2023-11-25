@@ -8,6 +8,8 @@ window.onload = () =>{
     // ShowFilms View creation
     ShowFilms = new ShowFilmsView;
 
+    //Loader
+    var loader = document.getElementById("loader");
     
     searchInput = document.getElementById("search-input");
 
@@ -32,35 +34,40 @@ window.onload = () =>{
 
     // Asign scroll loader
     window.addEventListener('scroll', async ()=> {
-
         const {scrollHeight, clientHeight, scrollTop} = document.documentElement
     
         // console.log(`scrollTop + clientHeight = ${scrollTop + clientHeight}  | Altura personalizada = ${scrollHeight - 3}`)
-        if(scrollTop + clientHeight > scrollHeight - 3 && moviesList.actualPage<=moviesList.pages && !moviesList.executingRequest){
+        if(scrollTop + clientHeight > scrollHeight - 300 && moviesList.actualPage<=moviesList.pages && !moviesList.executingRequest){
+            loader.style.display = "block";
             await moviesList.loadDoc(searchInput.value.trim(), false);
             ShowFilms.showFilms(moviesList.movies, moviesList.totalResults, moviesList.response);
             asignDetailsEvent();
+            loader.style.display = "none";
         }
     });
 
-    // Change view depending the Order Selected
-    document.getElementById("order").addEventListener("change", (e)=>{
-        let opt = e.target.value;
-        let movies;
-        switch(opt){
-            case 'opt1': // Order None
-                movies = moviesList.movies
-                break;
-            case 'opt2': // Order By Idbm Rating
-                movies = orderByRating(moviesList.movies);
-                break;
-            case 'opt3': // Order by fundraising
-                break;
-            case 'opt4': // Order by Votes
-                break;
-        }
-        ShowFilms.showFilms(movies, moviesList.totalResults, moviesList.response);
+    document.getElementById("close").addEventListener('click', ()=> {
+        ShowFilms.closeDetailPage();
     });
+
+    // Change view depending the Order Selected
+    // document.getElementById("order").addEventListener("change", (e)=>{
+    //     let opt = e.target.value;
+    //     let movies;
+    //     switch(opt){
+    //         case 'opt1': // Order None
+    //             movies = moviesList.movies
+    //             break;
+    //         case 'opt2': // Order By Idbm Rating
+    //             movies = orderByRating(moviesList.movies);
+    //             break;
+    //         case 'opt3': // Order by fundraising
+    //             break;
+    //         case 'opt4': // Order by Votes
+    //             break;
+    //     }
+    //     ShowFilms.showFilms(movies, moviesList.totalResults, moviesList.response);
+    // });
 
 }
 

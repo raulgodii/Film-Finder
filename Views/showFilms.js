@@ -1,6 +1,9 @@
 class ShowFilmsView{
     showFilms(movies, totalResults, response){
         console.log(movies)
+
+        document.getElementById("center").style.display = "none";
+        document.getElementById("main-films").style.display = "block";
         
         const results = document.getElementById("results");
 
@@ -13,11 +16,28 @@ class ShowFilmsView{
             movies.forEach(element => {
                 
                 const newFilm = document.createElement("div");
-                const title = document.createElement("p");
+                newFilm.className = "film-item";
+
+                let img = document.createElement("img");
+                
+                if(element.Poster == "N/A"){
+                    img.src = "Assets/NA.jpg";
+                } else {
+                    img.src = element.Poster;
+                }
+
+                let title = document.createElement("p");
+                title.className = "title";
                 title.textContent = element.Title;
                 newFilm.imdbID = element.imdbID;
 
+                let type = document.createElement("p");
+                type.className = "type";
+                type.textContent = element.Type;
+
+                newFilm.appendChild(img);
                 newFilm.appendChild(title);
+                newFilm.appendChild(type);
                 films.appendChild(newFilm);
             });
 
@@ -28,12 +48,57 @@ class ShowFilmsView{
     }
 
     showFilm(filmDetails){
-        const details = document.createElement("div");
-        let h1 = document.createElement("h1");
+        let details = document.getElementById("details-film");
+        details.style.transform = "translate(-50%, -50%)";
 
-        h1.textContent = filmDetails.Title;
+        document.body.style.overflow = "hidden";
 
-        details.appendChild(h1);
-        document.body.appendChild(details);
+        // Title
+        let title = details.getElementsByClassName("header-detail-title")[0];
+        title.textContent = filmDetails.Title;
+
+        // IMG
+        let img = details.querySelector(".main-detail-section img");
+        if(filmDetails.Poster == "N/A"){
+            img.src = "Assets/NA.jpg";
+        } else {
+            img.src = filmDetails.Poster;
+        }
+
+        // Plot
+        let plot = details.querySelector(".detail-plot");
+        plot.textContent = filmDetails.Plot;
+
+        // Release
+        let release = details.querySelector(".detail-release");
+        release.innerHTML = "<b>Released: </b>" + filmDetails.Released;
+
+        // Genre
+        let genre = details.querySelector(".detail-genre");
+        genre.innerHTML = "<b>Genre: </b>" + filmDetails.Genre;
+
+        // Rating
+        let rating = details.querySelector(".detail-rating");
+        rating.innerHTML = "<b>Rating: </b>" + filmDetails.imdbRating;
+
+        // Director
+        let director = details.querySelector(".detail-director");
+        director.innerHTML = "<b>Director: </b>" + filmDetails.Director;
+
+        // Actors
+        let actors = details.querySelector(".detail-actors");
+        actors.innerHTML = "<b>Actors: </b>" + filmDetails.Actors;
+        
+    }
+
+    // Change the landing page when there is a search
+    changeLandingPage(){
+        document.getElementById("center").style.display = "none";
+    }
+
+    closeDetailPage(){
+        let details = document.getElementById("details-film");
+        details.style.transform = "translate(-50%, -150%)";
+        document.body.style.overflow = "visible";
     }
 }
