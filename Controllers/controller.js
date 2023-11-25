@@ -68,7 +68,7 @@ window.onload = () =>{
                 movies = await moviesList.orderByRating(moviesList.movies);
                 break;
             case 'opt3': // Order by fundraising
-                //movies = await moviesList.orderByFundraising(moviesList.movies);
+                movies = await moviesList.orderByFundraising(moviesList.movies);
                 break;
             case 'opt4': // Order by Votes
                 break;

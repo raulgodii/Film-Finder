@@ -119,14 +119,20 @@ class moviesList{
     }
 
     async orderByFundraising(films) {
-        const detailsArray = await Promise.all(films.map(movie => this.loadDocFilm(movie.BoxOffice)));
+        const detailsArray = await Promise.all(films.map(movie => this.loadDocFilm(movie.imdbID)));
+
+        function convertToFloat(currencyString) {
+            const cleanNumberString = currencyString.replace(/[^\d.]/g, '');
+        
+            const floatValue = parseFloat(cleanNumberString);
+        
+            return floatValue;
+        }
     
-        const getImdbRating = (details) => {
-            if (details.imdbRating === 'N/A') {
-                return 0;
-            }
-            return parseFloat(details.imdbRating);
+        const getFundraising = (details) => {
+            return (details.BoxOffice && details.BoxOffice !== 'N/A') ? convertToFloat(details.BoxOffice) : 0;
         };
+        
 
         const filmsCopy = [...films];
 
@@ -134,8 +140,8 @@ class moviesList{
             const detailsA = detailsArray.find(details => details.imdbID === a.imdbID);
             const detailsB = detailsArray.find(details => details.imdbID === b.imdbID);
 
-            const ratingA = getImdbRating(detailsA);
-            const ratingB = getImdbRating(detailsB);
+            const ratingA = getFundraising(detailsA);
+            const ratingB = getFundraising(detailsB);
 
             return ratingB - ratingA;
         });
