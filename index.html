@@ -194,10 +194,19 @@
 		<div class="film-header">
 			<h3 id="results"></h3>
 
+			<div class="btn-container">
+	
+				<label class="switch btn-color-mode-switch">
+					<input value="1" id="color_mode" name="color_mode" type="checkbox">
+					<label class="btn-color-mode-switch-inner" data-off="Movies" data-on="Series" for="color_mode"></label>
+				</label>
+				
+			</div>
+
 			<div class="header-film-order">
 				<label for="order">Order By:</label>
 				<select id="order">
-					<option value="opt1" selected>none</option>
+					<option value="opt1" selected>None</option>
 					<option value="opt2">Rating</option>
 					<option value="opt3">Fundraising</option>
 					<option value="opt4">Votes</option>
