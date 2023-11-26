@@ -1,10 +1,11 @@
-var omdbApi;
+var moviesList;
 var ShowFilms;
 var order;
+var type;
 
 window.onload = () =>{
     // OMDb API Model creation
-    moviesList = new moviesList; 
+    moviesList = new MoviesList; 
 
     // ShowFilms View creation
     ShowFilms = new ShowFilmsView;
@@ -14,11 +15,12 @@ window.onload = () =>{
     
     searchInput = document.getElementById("search-input");
     order = document.getElementById("order");
+    type = document.getElementById("color_mode");
 
     let debounceTimer;
     // Set Enter Input event to the search input
     searchInput.addEventListener("input", async ()=>{
-
+        if(searchInput.value.length<3) return;
         // Clean TimeOut if exists
         clearTimeout(debounceTimer);
         loader.style.display = "block";
@@ -30,7 +32,10 @@ window.onload = () =>{
             // Request Method on OMDb model
             await moviesList.loadDoc(searchInput.value.trim(), true);
 
-            // LLAMADA VISTA CAMBIAR
+            
+            checkType();
+
+            // View Call
             ShowFilms.showFilms(moviesList.movies, moviesList.totalResults, moviesList.response);
 
             asignDetailsEvent();
@@ -47,6 +52,7 @@ window.onload = () =>{
             loader.style.display = "block";
             checkOrder();
             await moviesList.loadDoc(searchInput.value.trim(), false);
+            checkType();
             ShowFilms.showFilms(moviesList.movies, moviesList.totalResults, moviesList.response);
             asignDetailsEvent();
             loader.style.display = "none";
@@ -59,6 +65,13 @@ window.onload = () =>{
 
     // Change view depending the Order Selected
     order.addEventListener("change", checkOrder);
+
+    // Type of search event - Movies/Series
+    type.addEventListener("change", ()=>{
+        checkType();
+        ShowFilms.showFilms(moviesList.movies, moviesList.totalResults, moviesList.response);
+        asignDetailsEvent();
+    });
 
 }
 
@@ -99,4 +112,19 @@ async function checkOrder(){
 
         asignDetailsEvent();
         loader.style.display = "none";
+}
+
+function checkType(){
+    
+    moviesList.movies.forEach(movie => {
+        if(!type.checked && (movie.Type == "series" || movie.Type == "game")){
+            movie.show = "no";
+        } else if (type.checked && (movie.Type == "movie")){
+            movie.show = "no";
+        } else {
+            movie.show = "yes";
+        }
+    });
+
+    
 }

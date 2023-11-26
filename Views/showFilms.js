@@ -36,6 +36,8 @@ class ShowFilmsView{
                 newFilm.appendChild(title);
                 newFilm.appendChild(type);
                 films.appendChild(newFilm);
+
+                if(element.show == "no") newFilm.style.display = "none";
             });
 
         }else{

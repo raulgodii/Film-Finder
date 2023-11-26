@@ -1,4 +1,4 @@
-class moviesList{
+class MoviesList{
     movies;
     totalResults;
     pages;

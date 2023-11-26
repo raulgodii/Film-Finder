@@ -6,6 +6,7 @@
     display: none;
     position: relative;
     padding-bottom: 60px;
+    min-height: 120vh;
 }
 
 #films{
@@ -318,7 +319,7 @@
   
   .btn-color-mode-switch input[type="checkbox"]:checked + label.btn-color-mode-switch-inner:after {
     content: attr(data-on);
-    left: 100px;
+    left: 108px;
   }
   
   .btn-color-mode-switch input[type="checkbox"]:checked + label.btn-color-mode-switch-inner:before {
