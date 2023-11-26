@@ -114,4 +114,65 @@ class ShowFilmsView{
         details.style.transform = "translate(-50%, -150%)";
         document.body.style.overflow = "visible";
     }
+
+    drawChart(movies = [], order = "Ranking"){
+
+        var dataTable = [['Title', 'Data']];
+        var title = "No Title";
+
+        if(order == "Ranking"){
+            title = "Ranking - Analytics";
+            for(let movie of movies){
+                if(movie && movie.imdbRating && movie.imdbRating != "N/A"){
+                    dataTable.push([movie.Title, parseFloat(movie.imdbRating)]);
+                } else{
+                    dataTable.push([movie.Title, 0]);
+                }
+            }
+        }
+
+        if(order == "Fundraising"){
+            title = "Fundraising - Analytics";
+            function convertToFloat(currencyString) {
+                const cleanNumberString = currencyString.replace(/[^\d.]/g, '');
+            
+                const floatValue = parseFloat(cleanNumberString);
+            
+                return floatValue;
+            }
+
+            for(let movie of movies){
+                if(movie && movie.BoxOffice && movie.BoxOffice != "N/A"){
+                    dataTable.push([movie.Title, convertToFloat(movie.BoxOffice)]);
+                } else{
+                    dataTable.push([movie.Title, 0]);
+                }
+            }
+        }
+
+        if(order == "Votes"){
+            title = "Votes - Analytics";
+
+            for(let movie of movies){
+                if(movie && movie.imdbVotes && movie.imdbVotes != "N/A"){
+                    dataTable.push([movie.Title, parseFloat(movie.imdbVotes)]);
+                } else{
+                    dataTable.push([movie.Title, 0]);
+                }
+            }
+        }
+
+        console.log(dataTable)
+
+
+        var data = google.visualization.arrayToDataTable(dataTable);
+
+        var options = {
+            title: title,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+    }
 }

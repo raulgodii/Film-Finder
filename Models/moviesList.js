@@ -1,7 +1,7 @@
 class MoviesList{
-    movies;
-    totalResults;
-    pages;
+    movies = [];
+    totalResults = 0;
+    pages = 0;
     response = false;
     actualPage = 1;
     executingRequest = false;
@@ -97,7 +97,7 @@ class MoviesList{
         const detailsArray = await Promise.all(films.map(movie => this.loadDocFilm(movie.imdbID)));
     
         const getImdbRating = (details) => {
-            if (details.imdbRating === 'N/A') {
+            if (!details || !details.imdbRating || details.imdbRating === 'N/A') {
                 return 0;
             }
             return parseFloat(details.imdbRating);
@@ -130,8 +130,9 @@ class MoviesList{
         }
     
         const getFundraising = (details) => {
-            return (details.BoxOffice && details.BoxOffice !== 'N/A') ? convertToFloat(details.BoxOffice) : 0;
+            return (details && details.BoxOffice && details.BoxOffice !== 'N/A') ? convertToFloat(details.BoxOffice) : 0;
         };
+        
         
 
         const filmsCopy = [...films];
@@ -153,11 +154,12 @@ class MoviesList{
         const detailsArray = await Promise.all(films.map(movie => this.loadDocFilm(movie.imdbID)));
     
         const getVotes = (details) => {
-            if (!details.imdbVotes || details.imdbVotes === 'N/A') {
+            if (!details || !details.imdbVotes || details.imdbVotes === 'N/A') {
                 return 0;
             }
             return parseFloat(details.imdbVotes);
         };
+        
 
         const filmsCopy = [...films];
 
