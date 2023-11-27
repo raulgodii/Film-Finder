@@ -15,20 +15,24 @@ class MoviesList{
 
         this.executingRequest = true;
 
-        if(firstSearch) this.actualPage = 1;
+        if (firstSearch) this.actualPage = 1;
 
         return new Promise((resolve) => {
             const xhttp = new XMLHttpRequest();
 
-            xhttp.open("GET", "Controllers/searchFilms.php?s=" + searchInputValue + "&page=" + this.actualPage, true);
+            // Use the OMDB API URL directly
+            const apiKey = "3da0e6a9";
+            const apiUrl = `https://www.omdbapi.com/?apikey=${apiKey}&s=${searchInputValue}&page=${this.actualPage}`;
+
+            xhttp.open("GET", apiUrl, true);
             xhttp.onload = () => {
                 // Parse JSON response
                 let json = JSON.parse(xhttp.response);
 
-                if(firstSearch) this.searchFirstPage(json.Response, json.Search, json.totalResults);
-                else{
+                if (firstSearch) this.searchFirstPage(json.Response, json.Search, json.totalResults);
+                else {
                     let res = this.searchNextPage(json.Response, json.Search);
-                    if(res ==="error") return;
+                    if (res === "error") return;
                 }
 
                 this.executingRequest = false;
@@ -41,6 +45,7 @@ class MoviesList{
             xhttp.send();
         });
     }
+
 
     searchFirstPage(response, jsonSearch, totalResults){
         if(response == "True"){
@@ -75,15 +80,18 @@ class MoviesList{
 
     // AJAX request method to the API - Search Film Details
     loadDocFilm(imdbID) {
-
         return new Promise((resolve) => {
             const xhttp = new XMLHttpRequest();
 
-            xhttp.open("GET", "Controllers/searchFilmDetails.php?i=" + imdbID, true);
+            // Use the OMDB API URL directly
+            const apiKey = "3da0e6a9";
+            const apiUrl = `https://www.omdbapi.com/?apikey=${apiKey}&i=${imdbID}`;
+
+            xhttp.open("GET", apiUrl, true);
             xhttp.onload = () => {
                 // Parse JSON response
                 let json = JSON.parse(xhttp.response);
-                
+
                 // Resolve promise
                 resolve(json);
             };
@@ -92,6 +100,7 @@ class MoviesList{
             xhttp.send();
         });
     }
+
 
     async orderByRating(films) {
         const detailsArray = await Promise.all(films.map(movie => this.loadDocFilm(movie.imdbID)));
