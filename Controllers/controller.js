@@ -29,6 +29,8 @@ window.onload = () =>{
         if(searchInput.value.length<3) return;
         // Clean TimeOut if exists
         clearTimeout(debounceTimer);
+        
+        document.getElementById("films").innerHTML = '';
         loader.style.display = "block";
         piechart.style.display = "none";
         document.getElementById("order").value = "opt1";
@@ -57,11 +59,11 @@ window.onload = () =>{
         // console.log(`scrollTop + clientHeight = ${scrollTop + clientHeight}  | Altura personalizada = ${scrollHeight - 3}`)
         if(scrollTop + clientHeight > scrollHeight - 300 && moviesList.actualPage<=moviesList.pages && !moviesList.executingRequest){
             loader.style.display = "block";
-            piechart.style.display = "none";
+            //piechart.style.display = "none";
             checkOrder();
             await moviesList.loadDoc(searchInput.value.trim(), false);
             checkType();
-            piechart.style.display = "block";
+            //piechart.style.display = "block";
             ShowFilms.showFilms(moviesList.movies, moviesList.totalResults, moviesList.response);
             asignDetailsEvent();
             loader.style.display = "none";
@@ -73,7 +75,12 @@ window.onload = () =>{
     });
 
     // Change view depending the Order Selected
-    order.addEventListener("change", checkOrder);
+    order.addEventListener("change", ()=>{
+        loader.style.display = "block";
+        piechart.style.display = "none";
+        document.getElementById("films").innerHTML = '';
+        checkOrder();
+    });
 
     // Type of search event - Movies/Series
     type.addEventListener("change", ()=>{
@@ -99,8 +106,8 @@ function asignDetailsEvent(){
 
 async function checkOrder(){
         let opt = order.value;
-        loader.style.display = "block";
-        document.getElementById("films").innerHTML = '';
+        //loader.style.display = "block";
+        //document.getElementById("films").innerHTML = '';
         let movies;
         let firstFiveMovies = await getFirstFiveMovies(moviesList.movies);
         switch(opt){
