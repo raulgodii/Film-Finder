@@ -42,6 +42,7 @@ Dive into charts and analytics to gain a deeper understanding of the content lan
 
 6. Responsive Design
 Screen Hunt is designed to provide a seamless experience across devices. Whether you're using a desktop, tablet, or mobile phone, the responsive design ensures a consistent and enjoyable user experience.
+
 ![image](https://github.com/raulgodii/Screen-Hunt/assets/102313699/133ab8ef-5909-4eb4-8984-1e22f65150e6)
 
 
