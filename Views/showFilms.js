@@ -115,10 +115,21 @@ class ShowFilmsView{
         document.body.style.overflow = "visible";
     }
 
+    // Draw PieChart and Table
     drawChart(movies = [], order = "Ranking"){
 
         var dataTable = [['Title', 'Data']];
         var title = "No Title";
+
+        let table = document.getElementById("table");
+        table.innerHTML = "";
+        let tr = document.createElement("tr");
+        tr.className = "tableHeader";
+        let td = document.createElement("td");
+        td.colSpan = "2";
+
+        tr.appendChild(td);
+        table.appendChild(tr);
 
         if(order == "Ranking"){
             title = "Ranking - Analytics";
@@ -129,6 +140,9 @@ class ShowFilmsView{
                     dataTable.push([movie.Title, 0]);
                 }
             }
+
+            td.textContent = "TOP 5 Movies/Series - Order by Rating";
+
         }
 
         if(order == "Fundraising"){
@@ -148,6 +162,8 @@ class ShowFilmsView{
                     dataTable.push([movie.Title, 0]);
                 }
             }
+
+            td.textContent = "TOP 5 Movies/Series - Order by Fundraising";
         }
 
         if(order == "Votes"){
@@ -160,9 +176,28 @@ class ShowFilmsView{
                     dataTable.push([movie.Title, 0]);
                 }
             }
+
+            td.textContent = "TOP 5 Movies/Series - Order by Votes";
         }
 
         console.log(dataTable)
+
+        
+
+        for(let mov of dataTable.slice(1, 6)){
+            let tr = document.createElement("tr");
+            let td1 = document.createElement("td");
+            let td2 = document.createElement("td");
+
+            td1.textContent = mov[0];
+            td2.textContent = mov[1];
+
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+
+            table.appendChild(tr);
+        }
+        
 
 
         var data = google.visualization.arrayToDataTable(dataTable);

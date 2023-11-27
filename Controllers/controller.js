@@ -3,6 +3,7 @@ var ShowFilms;
 var order;
 var type;
 var piechart;
+var table;
 
 window.onload = () =>{
     // OMDb API Model creation
@@ -22,10 +23,11 @@ window.onload = () =>{
     order = document.getElementById("order");
     type = document.getElementById("color_mode");
     piechart = document.getElementById("piechart");
+    table = document.getElementById("table");
 
     let debounceTimer;
     // Set Enter Input event to the search input
-    searchInput.addEventListener("input", ()=>{
+    searchInput.addEventListener("input", async()=>{
         if(searchInput.value.length<3) return;
         // Clean TimeOut if exists
         clearTimeout(debounceTimer);
@@ -33,24 +35,33 @@ window.onload = () =>{
         document.getElementById("films").innerHTML = '';
         loader.style.display = "block";
         piechart.style.display = "none";
+        table.style.display = "none";
         document.getElementById("order").value = "opt1";
         ShowFilms.firstSearch();
 
         // Set TimeOut
+        debounceTimer = setTimeout(async () => {
+                // Request Method on OMDb model
+                await moviesList.loadDoc(searchInput.value.trim(), true);
+                moviesList.loadDoc(searchInput.value.trim(), true).then(()=>{
+                    checkType();
 
-            // Request Method on OMDb model
-            moviesList.loadDoc(searchInput.value.trim(), true).then(()=>{
+                    // View Call
+                    ShowFilms.showFilms(moviesList.movies, moviesList.totalResults, moviesList.response);
+
+                    asignDetailsEvent();
+                    loader.style.display = "none"; 
+                });
+
+
                 checkType();
 
                 // View Call
                 ShowFilms.showFilms(moviesList.movies, moviesList.totalResults, moviesList.response);
-    
+
                 asignDetailsEvent();
                 loader.style.display = "none"; 
-            });
-
-            
-
+        }, 300);
 
     });
 
@@ -80,6 +91,7 @@ window.onload = () =>{
     order.addEventListener("change", ()=>{
         loader.style.display = "block";
         piechart.style.display = "none";
+        table.style.display = "none";
         document.getElementById("films").innerHTML = '';
         checkOrder();
     });
@@ -111,26 +123,38 @@ async function checkOrder(){
         //loader.style.display = "block";
         //document.getElementById("films").innerHTML = '';
         let movies;
-        let firstFiveMovies = await getFirstFiveMovies(moviesList.movies);
+        let moviesID;
         switch(opt){
             case 'opt1': // Order None
                 movies = moviesList.movies;
                 piechart.style.display = "none";
+                table.style.display = "none";
                 break;
             case 'opt2': // Order By Idbm Rating
                 movies = await moviesList.orderByRating(moviesList.movies);
                 piechart.style.display = "block";
-                ShowFilms.drawChart(firstFiveMovies, "Ranking");
+                table.style.display = "block";
+                moviesID = await getMovies(movies);
+                //ShowFilms.drawTable(moviesID, "Ranking");
+                ShowFilms.drawChart(moviesID, "Ranking");
+                
+                // moviesID.slice(0, 5)
                 break;
             case 'opt3': // Order by fundraising
                 movies = await moviesList.orderByFundraising(moviesList.movies);
                 piechart.style.display = "block";
-                ShowFilms.drawChart(firstFiveMovies, "Fundraising");
+                table.style.display = "block";
+                moviesID = await getMovies(movies);
+                //ShowFilms.drawTable(moviesID, "Fundraising");
+                ShowFilms.drawChart(moviesID, "Fundraising");
                 break;
             case 'opt4': // Order by Votes
                 movies = await moviesList.orderByVotes(moviesList.movies);
                 piechart.style.display = "block";
-                ShowFilms.drawChart(firstFiveMovies, "Votes");
+                table.style.display = "block";
+                moviesID = await getMovies(movies);
+                //ShowFilms.drawTable(moviesID, "Votes");
+                ShowFilms.drawChart(moviesID, "Votes");
                 break;
         }
         
@@ -154,7 +178,7 @@ function checkType(){
 
 }
 
-async function getFirstFiveMovies(movies){
+async function getMovies(movies){
     let arr = [];
     cont = 0;
 
