@@ -463,10 +463,68 @@ font-size:24px;
 margin-left:auto;
 margin-right:auto; 
  }
+.col-md-3, .col-md-4{
+  display: none;
+}
 
-#top{
+.header-detail-title{
+  font-size: 15px;
+}
+.main-detail-info  p, .detail-plot{
+  font-size: 10px;
+}
+
+.details-container{
+  height: 90vh;
+}
+
+.main-detail{
+  height: 100%;
+}
+
+.header-film-order label, #order option:after, .btn-color-mode-switch > label.btn-color-mode-switch-inner:after, .btn-color-mode-switch > label.btn-color-mode-switch-inner:before{
+  font-size: 13px;
+} 
+
+.btn-color-mode-switch > label.btn-color-mode-switch-inner{
+  width: 120px;
+  height: 27px;
+}
+
+.btn-color-mode-switch > label.btn-color-mode-switch-inner:after, .btn-color-mode-switch > label.btn-color-mode-switch-inner:before{
+  width: 60px;
+  padding: 0;
+}
+
+.btn-color-mode-switch > label.btn-color-mode-switch-inner:before{
+  right: 0px;
+
+}
+
+.btn-color-mode-switch > label.btn-color-mode-switch-inner:before{
+  top:4px;
+}
+
+.btn-color-mode-switch input[type="checkbox"]:checked + label.btn-color-mode-switch-inner:after{
+  left:58px;
+}
+
+.btn-color-mode-switch input[type="checkbox"]:checked + label.btn-color-mode-switch-inner:before{
+  left: 2px;
+}
+
+.film-item{
+  width: 30%;
+  height: 275px;
+}
+
+#films{
+  gap: 3.33%;
+}
+
+/* #top{
 display:none; 
- }
+ } */
 #header .navbar-brand{
 display:block;
 }
@@ -592,3 +650,10 @@ min-height:200px;
 @media (min-width:1201px) and (max-width:1255px) {
 
  }
+
+ @media screen and (max-width : 1000px){
+  .main-detail-info  p, .detail-plot{
+    font-size: 13px;
+  }
+}
+

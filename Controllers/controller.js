@@ -25,7 +25,7 @@ window.onload = () =>{
 
     let debounceTimer;
     // Set Enter Input event to the search input
-    searchInput.addEventListener("input", async ()=>{
+    searchInput.addEventListener("input", ()=>{
         if(searchInput.value.length<3) return;
         // Clean TimeOut if exists
         clearTimeout(debounceTimer);
@@ -37,19 +37,21 @@ window.onload = () =>{
         ShowFilms.firstSearch();
 
         // Set TimeOut
-        debounceTimer = setTimeout(async () => {
+
             // Request Method on OMDb model
-            await moviesList.loadDoc(searchInput.value.trim(), true);
+            moviesList.loadDoc(searchInput.value.trim(), true).then(()=>{
+                checkType();
+
+                // View Call
+                ShowFilms.showFilms(moviesList.movies, moviesList.totalResults, moviesList.response);
+    
+                asignDetailsEvent();
+                loader.style.display = "none"; 
+            });
 
             
-            checkType();
 
-            // View Call
-            ShowFilms.showFilms(moviesList.movies, moviesList.totalResults, moviesList.response);
 
-            asignDetailsEvent();
-            loader.style.display = "none"; 
-        }, 300);
     });
 
     // Asign scroll loader
@@ -157,12 +159,9 @@ async function getFirstFiveMovies(movies){
     cont = 0;
 
     for(let movie of movies){
-        if (cont < 5) {
-            arr.push(await moviesList.loadDocFilm(movie.imdbID));
-            cont++;
-        } else {
-            break;
-        }
+
+        arr.push(await moviesList.loadDocFilm(movie.imdbID));
+
     }
     return arr;
 }
