@@ -16,6 +16,10 @@ class ShowFilmsView{
                 newFilm.className = "film-item";
 
                 let img = document.createElement("img");
+                img.onerror = () => {
+                    console.log("Error cargando el elemento :", element.Title);
+                    img.src = "Assets/NA.jpg";
+                };
                 
                 if(element.Poster == "N/A"){
                     img.src = "Assets/NA.jpg";
