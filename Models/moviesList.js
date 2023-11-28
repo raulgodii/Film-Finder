@@ -21,7 +21,7 @@ class MoviesList{
             const xhttp = new XMLHttpRequest();
 
             // Use the OMDB API URL directly
-            const apiKey = "3da0e6a9";
+            const apiKey = "8b318323";
             const apiUrl = `https://www.omdbapi.com/?apikey=${apiKey}&s=${searchInputValue}&page=${this.actualPage}`;
 
             xhttp.open("GET", apiUrl, true);
@@ -84,7 +84,7 @@ class MoviesList{
             const xhttp = new XMLHttpRequest();
 
             // Use the OMDB API URL directly
-            const apiKey = "3da0e6a9";
+            const apiKey = "8b318323";
             const apiUrl = `https://www.omdbapi.com/?apikey=${apiKey}&i=${imdbID}`;
 
             xhttp.open("GET", apiUrl, true);

@@ -161,7 +161,7 @@ async function checkOrder(){
         ShowFilms.showFilms(movies, moviesList.totalResults, moviesList.response);
 
         asignDetailsEvent();
-        loader.style.display = "none";
+        //loader.style.display = "none";
 }
 
 function checkType(){
